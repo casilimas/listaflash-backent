@@ -9,14 +9,16 @@ const listarListaPorNumero = require("../controllers/listarListas");
 
 const router = express.Router();
 
-// Rutas específicas primero
+// Crear una nueva lista
 router.post("/listas", crearLista);
+
+// Obtener la última lista creada
 router.get("/listas/ultima", obtenerUltimaLista);
 
-// Nueva ruta: buscar lista por número y retornar sus items
-router.get("/listas/:numero", listarListaPorNumero);
+// Buscar lista por número y retornar sus items (evita conflicto con ID)
+router.get("/listas/numero/:numero", listarListaPorNumero);
 
-// Ruta para editar lista por ID (se recomienda que uses /listas/id/:id para evitar colisión si quieres)
-router.put("/listas/:id", editarLista);
+// Editar lista por ID (ruta más específica para evitar colisión)
+router.put("/listas/id/:id", editarLista);
 
 module.exports = router;
