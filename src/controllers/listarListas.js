@@ -16,8 +16,8 @@ const listarListaPorNumero = async (req, res) => {
       return res.status(404).json({ mensaje: "La lista no existe" });
     }
 
-    // Buscar los items asociados
-    const items = await Item.find({ listaId: lista._id });
+    // Buscar los items asociados correctamente (campo 'lista', no 'listaId')
+    const items = await Item.find({ lista: lista._id });
 
     return res.status(200).json({
       lista: {
