@@ -1,5 +1,5 @@
 const express = require("express");
-const { createItem } = require("../controllers/itemController");
+const { createItem, marcarItemComoComprado } = require("../controllers/itemController");
 const editarItem = require("../controllers/editarItem");
 const eliminarItem = require("../controllers/eliminarItem"); 
 
@@ -10,6 +10,9 @@ router.post("/items/crear", createItem);
 
 // PUT /items/editar/:id → Editar un artículo por ID
 router.put("/items/editar/:id", editarItem);
+
+//  PUT /items/comprar/:id → Marcar como comprado
+router.put("/items/comprar/:id", marcarItemComoComprado);
 
 // DELETE /items/eliminar/:id → Eliminar un artículo por ID
 router.delete("/items/eliminar/:id", eliminarItem);

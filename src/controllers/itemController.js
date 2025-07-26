@@ -11,7 +11,7 @@ const createItem = async (req, res) => {
     }
 
     // Verificar si ya existe un artículo con el mismo nombre en esa lista
-    const existente = await Item.findOne({ 
+    const existente = await Item.findOne({
       nombre: nombre.trim().toLowerCase(),
       lista: listaId
     });
@@ -33,7 +33,7 @@ const createItem = async (req, res) => {
     const itemConLista = await Item.findById(itemGuardado._id).populate("lista", "numero");
 
     // Emitir evento en tiempo real
-    req.io.emit("itemAdded", itemConLista);
+    req.io?.emit("itemAdded", itemConLista);
 
     res.status(201).json(itemConLista);
   } catch (err) {
@@ -41,6 +41,29 @@ const createItem = async (req, res) => {
   }
 };
 
+// PUT /items/comprar/:id → Marcar un artículo como comprado
+const marcarItemComoComprado = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const item = await Item.findById(id);
+    if (!item) {
+      return res.status(404).json({ message: "Item no encontrado" });
+    }
+
+    item.comprado = true;
+    await item.save();
+
+    // Emitir evento si usas sockets
+    req.io?.emit("itemComprado", item);
+
+    res.status(200).json(item);
+  } catch (error) {
+    res.status(500).json({ message: "Error al marcar como comprado" });
+  }
+};
+
 module.exports = {
   createItem,
+  marcarItemComoComprado,
 };
