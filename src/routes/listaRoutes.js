@@ -6,6 +6,7 @@ const {
 } = require("../controllers/listaController");
 
 const listarListaPorNumero = require("../controllers/listarListas");
+const listarTodasLasListas = require("../controllers/listarTodasLasListas"); // ✅ nuevo controlador
 
 const router = express.Router();
 
@@ -15,10 +16,13 @@ router.post("/listas", crearLista);
 // Obtener la última lista creada
 router.get("/listas/ultima", obtenerUltimaLista);
 
-// Buscar lista por número y retornar sus items (evita conflicto con ID)
+// Buscar lista por número y retornar sus items
 router.get("/listas/numero/:numero", listarListaPorNumero);
 
-// Editar lista por ID (ruta más específica para evitar colisión)
+// Obtener todas las listas (nuevo endpoint necesario para frontend)
+router.get("/listas/todas", listarTodasLasListas); // ✅ nuevo endpoint
+
+// Editar lista por ID
 router.put("/listas/id/:id", editarLista);
 
 module.exports = router;
